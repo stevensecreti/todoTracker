@@ -54,17 +54,19 @@ export default class ToDoView {
     viewList(list) {
         // WE'LL BE ADDING THE LIST ITEMS TO OUR WORKSPACE
         let itemsListDiv = document.getElementById("todo-list-items-div");
-
         // GET RID OF ALL THE ITEMS
         this.clearItemsList();
-
+        
         for (let i = 0; i < list.items.length; i++) {
             // NOW BUILD ALL THE LIST ITEMS
             let listItem = list.items[i];
             let listItemElement = "<div id='todo-list-item-" + listItem.id + "' class='list-item-card'>"
-                                + "<div class='task-col'>" + listItem.description + "</div>"
-                                + "<div class='due-date-col'>" + listItem.dueDate + "</div>"
-                                + "<div class='status-col'>" + listItem.status + "</div>"
+                                + "<div class='task-col' id = 'task-col-" + listItem.id + "'>" + listItem.description + "</div>"
+                                + "<input class='input' type = 'text' id = 'inputTask-col-" + listItem.id + "'></input>"
+                                + "<div class='due-date-col' id = 'due-date-col-" + listItem.id + "' >" + listItem.dueDate + "</div>"
+                                + "<input class='input' type = 'date' id = 'inputDate-col-" + listItem.id + "'></input>"
+                                + "<div class='status-col' id = 'status-col-" + listItem.id + "' >" + listItem.status + "</div>"
+                                + "<select class='input' id = 'selectStatus-col-" + listItem.id + "'><option value = 'complete'>Complete</option><option value = 'incomplete'>Incomplete</option></select>"
                                 + "<div class='list-controls-col'>"
                                 + " <div class='list-item-control material-icons'>keyboard_arrow_up</div>"
                                 + " <div class='list-item-control material-icons'>keyboard_arrow_down</div>"
@@ -74,10 +76,18 @@ export default class ToDoView {
                                 + "</div>";
             itemsListDiv.innerHTML += listItemElement;
         }
+        this.controller.addEventHandlers(list);
+        let allLists = document.getElementById("todo-lists-list");
+        var firstList = document.getElementById("todo-list-" + list.id);
+        allLists.insertBefore(firstList, allLists.firstChild);
+
     }
 
     // THE VIEW NEEDS THE CONTROLLER TO PROVIDE PROPER RESPONSES
     setController(initController) {
         this.controller = initController;
     }
+
+   
+
 }

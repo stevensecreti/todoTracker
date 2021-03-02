@@ -70,3 +70,37 @@
 .list-item-control {
     width: 20%;
 }
+
+.modal{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 40%;
+    top: 10%;
+    width: 20%;
+    height: 25%;
+    overflow: auto;
+}
+
+.cancelDelete{
+    position: absolute;
+    right: 10px;
+    bottom: 20px;
+    font-size: 20px;
+    padding: 24px 48px;
+    display: flex;
+}
+
+.confirmDelete{
+    position:absolute;
+    left: 10px;
+    bottom: 20px;
+    font-size: 20px;
+    padding: 24px 48px;
+    display: flex;  
+}
+
+.input{
+    display: none;
+    width:25%;
+}

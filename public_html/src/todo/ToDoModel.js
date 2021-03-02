@@ -103,6 +103,55 @@ export default class ToDoModel {
         return newItem;
     }
 
+    changeTask(item){
+        let itemId = item.id;
+        document.getElementById("task-col-" + itemId).style.display = "none";
+        document.getElementById("add-list-button").style.visibility = "hidden";
+        document.getElementById("inputTask-col-" + itemId).style.display = "flex";
+        var textBox = document.getElementById("inputTask-col-" + itemId);
+        textBox.onblur = function(){
+            var text = textBox.value;
+            item.setDescription(text);
+            document.getElementById("inputTask-col-" + itemId).style.display = "none";
+            document.getElementById("task-col-" + itemId).innerHTML = text;
+            document.getElementById("task-col-" + itemId).style.display = "flex";
+            document.getElementById("add-list-button").style.visibility = "visible";
+        }
+    }
+    changeDueDate(item){
+        let itemId = item.id;
+        document.getElementById("due-date-col-" + itemId).style.display = "none";
+        document.getElementById("inputDate-col-" + itemId).style.display = "flex";
+        document.getElementById("add-list-button").style.visibility = "hidden";
+        var dateBox = document.getElementById("inputDate-col-" + itemId);
+        dateBox.onblur = function(){
+            var date = dateBox.value;
+            item.setDueDate(date);
+            document.getElementById("due-date-col-" + itemId).innerHTML = date;
+            document.getElementById("due-date-col-" + itemId).style.display = "flex";
+            document.getElementById("inputDate-col-" + itemId).style.display = "none";
+            document.getElementById("add-list-button").style.visibility = "visible";
+        }
+    }
+    changeStatus(item){
+        let itemId = item.id;
+        var status = document.getElementById("status-col-" + itemId);
+        var statusBox = document.getElementById("selectStatus-col-" + itemId);
+        document.getElementById("add-list-button").style.visibility = "hidden";
+        status.style.display = "none";
+        statusBox.style.display = "flex";
+        statusBox.onblur = function(){
+            var statusVal = statusBox.value;
+            item.setStatus(statusVal);
+            status.innerHTML = statusVal;
+            status.style.display = "flex";
+            statusBox.style.display = "none";
+            document.getElementById("add-list-button").style.visibility = "visible"
+        }
+    }
+
+
+
     /**
      * Makes a new list item with the provided data and adds it to the list.
      */
@@ -152,16 +201,17 @@ export default class ToDoModel {
      * Finds and then removes the current list.
      */
     removeCurrentList() {
-        let indexOfList = -1;
-        for (let i = 0; (i < this.toDoLists.length) && (indexOfList < 0); i++) {
-            if (this.toDoLists[i].id === this.currentList.id) {
-                indexOfList = i;
-            }
-        }
-        this.toDoLists.splice(indexOfList, 1);
-        this.currentList = null;
-        this.view.clearItemsList();
-        this.view.refreshLists(this.toDoLists);
+            document.getElementById('modal').style.display = "none"; 
+            let indexOfList = -1;
+            for (let i = 0; (i < this.toDoLists.length) && (indexOfList < 0); i++) {
+                if (this.toDoLists[i].id === this.currentList.id) {
+                    indexOfList = i;
+                }
+             }
+            this.toDoLists.splice(indexOfList, 1);
+            this.currentList = null;
+            this.view.clearItemsList();
+            this.view.refreshLists(this.toDoLists);
     }
 
     // WE NEED THE VIEW TO UPDATE WHEN DATA CHANGES.
@@ -177,4 +227,21 @@ export default class ToDoModel {
             this.tps.undoTransaction();
         }
     } 
+
+    undoCheck(){
+        if(this.tps.hasTransactionToUndo()){
+            document.getElementById("undo-button").style.visibility = "visible";
+        }
+        else{
+            document.getElementById("undo-button").style.visibility = "hidden";
+        }
+    }
+    redoCheck(){
+        if(this.tps.hasTransactionToRedo()){
+            document.getElementById("redo-button").style.visibility = "visible";
+        }
+        else{
+            document.getElementById("redo-button").style.visibility = "hidden";  
+        }
+    }
 }
