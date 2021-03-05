@@ -38,26 +38,50 @@ export default class ToDoController {
             appModel.undoCheck();
             appModel.redoCheck();
         }
-        
-
+        document.getElementById("close-list-button").onmousedown = function(){
+            appModel.closeCurrentList();
+        }
     }
 
     addEventHandlers(list){
         let appModel = this.model;
         for(let i = 0; i < list.items.length; i++){
             let listItem = list.items[i];
-            document.getElementById("task-col-" + listItem.id).onmousedown = function(){
+            document.getElementById("task-col-" + listItem.id).onclick = function(){
                 appModel.changeTask(listItem);    
             }
-            document.getElementById("due-date-col-" + listItem.id).onmousedown = function(){
-                appModel.changeDueDate(listItem);    
+            document.getElementById("due-date-col-" + listItem.id).onclick = function(){
+                appModel.changeDueDateTransaction(listItem);    
             }
-            document.getElementById("status-col-" + listItem.id).onmousedown = function(){
-                appModel.changeStatus(listItem);    
+            document.getElementById("status-col-" + listItem.id).onclick = function(){
+                appModel.changeStatusTransaction(listItem);    
+            }
+            document.getElementById("up-" + listItem.id).onclick = function(){
+                appModel.moveUpTransaction(listItem);
+            }
+            document.getElementById("down-" + listItem.id).onclick = function(){
+                appModel.moveDownTransaction(listItem, list);    
+            }
+            document.getElementById("close-" + listItem.id).onclick = function(){
+                appModel.removeItemTransaction(listItem, list);
             }
         }
         
         
+    }
+
+    setStatusColors(list){
+        let appModel = this.model;
+        for(let i = 0; i < list.items.length; i++){
+            let listItem = list.items[i];
+            let status = document.getElementById("status-col-" + listItem.id);
+            if(listItem.getStatus() == "incomplete"){
+                status.style.color = "yellow";
+            }
+            else{
+                status.style.color = "cyan";
+            }
+        }
     }
 
 

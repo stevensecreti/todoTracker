@@ -13,7 +13,7 @@
     --swatch-text:          #e9edf0; /* USED IN MOUSE-OVER SELECTION OF TEXT AND BORDERS */ 
     --swatch-text-accent:   #ffc819; /* USED IN MOUSE-OVER SELECTION OF TEXT AND BORDERS */  
 
-    --font-primary:         'Lexend Exa', sans-serif;
+    --font-primary:         Consolas, monaco, monospace;
 }
 
 #grid-container {
@@ -26,7 +26,7 @@
 }
 
 #navbar {
-    box-shadow: 2px 2px 2px var(--swatch-primary); 
+    box-shadow: 2px 2px 2px var(--swatch-primary);
 }
 
 #left-sidebar {
@@ -40,10 +40,15 @@
     color: rgb(233,237,240);
 }
 
+.input{
+    background-color: var(--swatch-primary);
+    color: rgb(233,237,240);    
+}
+
 #title-div {
     color: rgb(255,200,25);
     font-weight: bold;
-    font-size: 14pt;
+    font-size: 21pt;
 }
 
 #left-sidebar-header {
@@ -59,7 +64,14 @@
 }
 
 .list-item-card {
+    border-bottom: dotted;
+}
+
+.list-item{
     border-bottom: solid;
+}
+.list-item:hover{
+
 }
 
 .todo_button {
@@ -67,11 +79,11 @@
     background-color: var(--swatch-complement);
 }
 
-.todo_button:hover {
+.todo_button:hover{
     background-color: var(--swatch-contrast);
 }
 
-.modal{
+.modal-dialog{
     background-color: var(--swatch-complement);
 }
 

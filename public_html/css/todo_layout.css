@@ -8,6 +8,10 @@
     grid-template-columns: 12% 88%;
 }
 
+.grid-item{
+    text-align: center;
+}
+
 #navbar {
     grid-column: 1 / span 2;
     grid-row: 1 / span 1;
@@ -16,6 +20,9 @@
 #left-sidebar {
     grid-column: 1 / span 1;
     grid-row: 2 / span 1;
+}
+
+.todo_button{
 }
 
 #left-sidebar-header {
@@ -49,6 +56,12 @@
     flex-direction: row;
 }
 
+.list-item{
+    height: 500%;
+    display: flex;
+    flex-direction: row;
+}
+
 .task-col {
     width:25%;
 }
@@ -71,15 +84,27 @@
     width: 20%;
 }
 
-.modal{
+#modal{
     display: none;
     position: fixed;
     z-index: 1;
+    left: 0%;
+    top: 0%;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-dialog{
+    display: block;
+    position: fixed;
+    z-index: 2;
     left: 40%;
     top: 10%;
     width: 20%;
     height: 25%;
-    overflow: auto;
+    animation: appear_in .3s ease;
 }
 
 .cancelDelete{

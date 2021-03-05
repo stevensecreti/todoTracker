@@ -53,6 +53,10 @@ export default class ToDoView {
     // LOADS THE list ARGUMENT'S ITEMS INTO THE VIEW
     viewList(list) {
         // WE'LL BE ADDING THE LIST ITEMS TO OUR WORKSPACE
+        document.getElementById("add-item-button").style.visibility = "visible";
+        document.getElementById("delete-list-button").style.visibility = "visible";
+        document.getElementById("close-list-button").style.visibility = "visible";
+        
         let itemsListDiv = document.getElementById("todo-list-items-div");
         // GET RID OF ALL THE ITEMS
         this.clearItemsList();
@@ -60,7 +64,7 @@ export default class ToDoView {
         for (let i = 0; i < list.items.length; i++) {
             // NOW BUILD ALL THE LIST ITEMS
             let listItem = list.items[i];
-            let listItemElement = "<div id='todo-list-item-" + listItem.id + "' class='list-item-card'>"
+            let listItemElement = "<div id='todo-list-item-" + listItem.id + "' class='list-item'>"
                                 + "<div class='task-col' id = 'task-col-" + listItem.id + "'>" + listItem.description + "</div>"
                                 + "<input class='input' type = 'text' id = 'inputTask-col-" + listItem.id + "'></input>"
                                 + "<div class='due-date-col' id = 'due-date-col-" + listItem.id + "' >" + listItem.dueDate + "</div>"
@@ -68,9 +72,9 @@ export default class ToDoView {
                                 + "<div class='status-col' id = 'status-col-" + listItem.id + "' >" + listItem.status + "</div>"
                                 + "<select class='input' id = 'selectStatus-col-" + listItem.id + "'><option value = 'complete'>Complete</option><option value = 'incomplete'>Incomplete</option></select>"
                                 + "<div class='list-controls-col'>"
-                                + " <div class='list-item-control material-icons'>keyboard_arrow_up</div>"
-                                + " <div class='list-item-control material-icons'>keyboard_arrow_down</div>"
-                                + " <div class='list-item-control material-icons'>close</div>"
+                                + " <div class='list-item-control material-icons' id = 'up-" + listItem.id + "'>keyboard_arrow_up</div>"
+                                + " <div class='list-item-control material-icons' id = 'down-" + listItem.id + "'>keyboard_arrow_down</div>"
+                                + " <div class='list-item-control material-icons' id = 'close-" + listItem.id + "'>close</div>"
                                 + " <div class='list-item-control'></div>"
                                 + " <div class='list-item-control'></div>"
                                 + "</div>";
@@ -79,7 +83,22 @@ export default class ToDoView {
         this.controller.addEventHandlers(list);
         let allLists = document.getElementById("todo-lists-list");
         var firstList = document.getElementById("todo-list-" + list.id);
+        allLists.firstChild.style.backgroundColor = "var(--swatch-complement)";
+
         allLists.insertBefore(firstList, allLists.firstChild);
+        firstList.style.backgroundColor = "var(--swatch-accent)";
+
+        let listItems = document.getElementById("todo-list-items-div");
+        let firstItemId = listItems.firstChild.id;
+        let idNum = firstItemId.substring(15);
+        let firstMoveUp = document.getElementById("up-" + idNum);
+        firstMoveUp.style.visibility = "hidden";
+        let lastItemId = listItems.lastChild.id;
+        let lastIdNum = lastItemId.substring(15);
+        let lastMoveDown = document.getElementById("down-" + lastIdNum);
+        lastMoveDown.style.visibility = "hidden";
+
+        this.controller.setStatusColors(list);
 
     }
 

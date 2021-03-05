@@ -55,4 +55,9 @@ window.onload = function() {
     // MAKE THE APP AND LAUNCH IT
     let app = new ToDoTrackerApp();
     app.launch("./src/test/TestToDoLists.json");
+    document.getElementById("add-item-button").style.visibility = "hidden";
+    document.getElementById("delete-list-button").style.visibility = "hidden";
+    document.getElementById("close-list-button").style.visibility = "hidden";
+    document.getElementById("undo-button").style.visibility = "hidden";
+    document.getElementById("redo-button").style.visibility = "hidden";
 }

@@ -78,4 +78,16 @@ export default class ToDoList {
     getItemAtIndex(index) {
         return this.items[index];
     }
+
+    swapItems(item1, direction){
+        let index1 = this.getIndexOfItem(item1);
+        let index2 = index1 + direction;
+        console.log(index1);
+        console.log(index2);
+        [this.items[index1], this.items[index2]] = [this.items[index2], this.items[index1]];
+    }
+
+    addItemAtIndex(item, index){
+        this.items.splice(index, 0, item);
+    }
 }
