@@ -56,7 +56,6 @@ export default class ToDoView {
         document.getElementById("add-item-button").style.visibility = "visible";
         document.getElementById("delete-list-button").style.visibility = "visible";
         document.getElementById("close-list-button").style.visibility = "visible";
-        
         let itemsListDiv = document.getElementById("todo-list-items-div");
         // GET RID OF ALL THE ITEMS
         this.clearItemsList();

@@ -51,10 +51,10 @@ export default class ToDoController {
                 appModel.changeTask(listItem);    
             }
             document.getElementById("due-date-col-" + listItem.id).onclick = function(){
-                appModel.changeDueDateTransaction(listItem);    
+                appModel.changeDueDate(listItem);    
             }
             document.getElementById("status-col-" + listItem.id).onclick = function(){
-                appModel.changeStatusTransaction(listItem);    
+                appModel.changeStatus(listItem);    
             }
             document.getElementById("up-" + listItem.id).onclick = function(){
                 appModel.moveUpTransaction(listItem);

@@ -91,6 +91,9 @@ export default class ToDoModel {
      * @param {*} initName The name of this to add.
      */
     addNewList(initName) {
+        this.tps.clearAllTransactions();
+        this.undoCheck();
+        this.redoCheck();
         let newList = new ToDoList(this.nextListId++);
         if (initName)
             newList.setName(initName);
@@ -124,8 +127,6 @@ export default class ToDoModel {
             let transaction = new ChangeTask_Transaction(modelCurrent, item, previousValue, text);
             TPS.addTransaction(transaction);      
         }
-        
-
     }
     doChangeTask(item, text){
         item.setDescription(text);
@@ -133,41 +134,44 @@ export default class ToDoModel {
         document.getElementById("task-col-" + item.id).innerHTML = text;
         document.getElementById("task-col-" + item.id).style.display = "flex";
         document.getElementById("add-list-button").style.visibility = "visible";
+        document.getElementById("undo-button").style.visibility = "visible";
     }
     undoChangeTask(item, value){
         item.setDescription(value);
         this.view.viewList(this.currentList);
     }
 
-    changeDueDateTransaction(item){
-        let transaction = new ChangeDueDate_Transaction(this, item);
-        this.tps.addTransaction(transaction);            
-    }
     changeDueDate(item){
         let itemId = item.id;
+        let previousDate = item.getDueDate();
         document.getElementById("due-date-col-" + itemId).style.display = "none";
         document.getElementById("inputDate-col-" + itemId).style.display = "flex";
         document.getElementById("add-list-button").style.visibility = "hidden";
         var dateBox = document.getElementById("inputDate-col-" + itemId);
         dateBox.focus();
+        let TPS = this.tps;
+        let modelCurrent = this;
         dateBox.onblur = function(){
             var date = dateBox.value;
-            item.setDueDate(date);
-            document.getElementById("due-date-col-" + itemId).innerHTML = date;
-            document.getElementById("due-date-col-" + itemId).style.display = "flex";
-            document.getElementById("inputDate-col-" + itemId).style.display = "none";
-            document.getElementById("add-list-button").style.visibility = "visible";
+            let transaction = new ChangeDueDate_Transaction(modelCurrent, item, previousDate, date);
+            TPS.addTransaction(transaction);  
+
         }
     }
+    doChangeDueDate(item, value){
+        item.setDueDate(value);
+        document.getElementById("due-date-col-" + item.id).innerHTML = value;
+        document.getElementById("due-date-col-" + item.id).style.display = "flex";
+        document.getElementById("inputDate-col-" + item.id).style.display = "none";
+        document.getElementById("add-list-button").style.visibility = "visible";
+        document.getElementById("undo-button").style.visibility = "visible";
+    }
+
     undoChangeDueDate(item, date){
         item.setDueDate(date);
         this.view.viewList(this.currentList);
     }
 
-    changeStatusTransaction(item){
-        let transaction = new ChangeStatus_Transaction(this, item);
-        this.tps.addTransaction(transaction);            
-    } 
     changeStatus(item){
         let itemId = item.id;
         var status = document.getElementById("status-col-" + itemId);
@@ -176,21 +180,31 @@ export default class ToDoModel {
         status.style.display = "none";
         statusBox.style.display = "flex";
         statusBox.focus();
+        let currentModel = this;
+        let TPS = this.tps;
         statusBox.onblur = function(){
             var statusVal = statusBox.value;
-            item.setStatus(statusVal);
-            status.innerHTML = statusVal;
-            if(statusVal == "incomplete"){
-                status.style.color = "yellow";
-            }
-            else{
-                status.style.color = "cyan";
-            }
-            status.style.display = "flex";
-            statusBox.style.display = "none";
-            document.getElementById("add-list-button").style.visibility = "visible"
+            let transaction = new ChangeStatus_Transaction(currentModel, item, item.getStatus(), statusVal);
+            TPS.addTransaction(transaction);  
         }
     }
+    doChangeStatus(item, statusVal){
+        item.setStatus(statusVal);
+        let status = document.getElementById("status-col-" + item.id);
+        let statusBox = document.getElementById("selectStatus-col-" + item.id);
+        status.innerHTML = statusVal;
+        document.getElementById("undo-button").style.visibility = "visible";
+        if(statusVal == "incomplete"){
+            status.style.color = "yellow";
+        }
+        else{
+            status.style.color = "cyan";
+        }
+        status.style.display = "flex";
+        statusBox.style.display = "none";
+        document.getElementById("add-list-button").style.visibility = "visible"
+    }
+
     undoChangeStatus(item, status){
         item.setStatus(status);
         this.view.viewList(this.currentList);
@@ -202,6 +216,7 @@ export default class ToDoModel {
     }
 
     moveUp(item){
+        document.getElementById("undo-button").style.visibility = "visible";
         let itemId = item.id;
         let currentItem = document.getElementById("todo-list-item-" + itemId);
         let switchItem = currentItem.previousSibling;
@@ -226,6 +241,7 @@ export default class ToDoModel {
     }
 
     moveDown(item){
+        document.getElementById("undo-button").style.visibility = "visible";
         let itemId = item.id;
         let currentItem = document.getElementById("todo-list-item-" + itemId);
         let switchItem = currentItem.nextSibling;
@@ -267,6 +283,9 @@ export default class ToDoModel {
                 listIndex = i;
         }
         if (listIndex >= 0) {
+            this.tps.clearAllTransactions();
+            this.undoCheck();
+            this.redoCheck();
             let listToLoad = this.toDoLists[listIndex];
             this.currentList = listToLoad;
             this.view.viewList(this.currentList);
@@ -291,6 +310,7 @@ export default class ToDoModel {
     }
 
     removeItem(itemToRemove) {
+        document.getElementById("undo-button").style.visibility = "visible";
         this.currentList.removeItem(itemToRemove);
         this.view.viewList(this.currentList);
     }

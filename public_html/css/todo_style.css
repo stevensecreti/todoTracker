@@ -70,8 +70,18 @@
 .list-item{
     border-bottom: solid;
 }
-.list-item:hover{
 
+.task-col:hover{
+    background-color: var(--swatch-contrast);
+}
+.due-date-col:hover{
+    background-color: var(--swatch-contrast);
+}
+.status-col:hover{
+    background-color: var(--swatch-contrast);
+}
+.list-item-control:hover{
+    background-color: var(--swatch-contrast);
 }
 
 .todo_button {
